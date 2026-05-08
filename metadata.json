@@ -1,5 +1,6 @@
 {
   "name": "EduBot - Academic AI Assistant",
   "description": "A privacy-first AI chatbot for coursework support. Upload course materials and get context-aware answers with confidence indicators.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }
