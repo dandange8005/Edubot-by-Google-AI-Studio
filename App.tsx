@@ -41,9 +41,25 @@ const App: React.FC = () => {
     
     // Initialize chat history for this session
     const currentBot = bots.find(b => b.id === botId);
-    const welcomeText = isInstructor
-      ? `You are editing "${currentBot?.title}". Upload materials specifically for this assessment.`
-      : `Hi Sarah! I'm ready to help with "${currentBot?.title}". Ask me anything about the course materials.`;
+    
+    let welcomeText = '';
+    if (isInstructor) {
+      welcomeText = `You are editing "${currentBot?.title}". Upload materials specifically for this assessment.`;
+    } else {
+      const fileNames = currentBot?.files.map(f => f.name).join(', ');
+      const filesContext = fileNames ? `I currently have access to: ${fileNames}.` : "I don't have any materials uploaded yet.";
+      
+      welcomeText = `Hi! I'm ready to help with "${currentBot?.title}". 
+      
+Here is what I can and cannot do:
+- **Scope:** I can answer questions, explain concepts, clarify rubrics, and generate revision questions based *only* on the provided module materials. 
+- **Limitations:** I cannot draft, write, or complete assignments for you. I won't use outside knowledge.
+- **Documents:** ${filesContext}
+      
+If you are stuck, feeling overwhelmed, or need to speak to someone directly, please contact your module tutor at tutor@university.edu during office hours, or ask in the module Teams channel.
+
+How can I help you engage with the materials today?`;
+    }
 
     setMessages([{
       id: 'welcome',
@@ -153,7 +169,8 @@ const App: React.FC = () => {
             {
                 message: userMsg.text,
                 files: activeBot.files, // PASS ONLY ACTIVE BOT FILES
-                history: messages
+                history: messages,
+                courseTitle: activeBot.title
             },
             (chunk) => {
                 fullText += chunk;
