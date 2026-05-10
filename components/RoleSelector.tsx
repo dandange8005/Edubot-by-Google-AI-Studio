@@ -66,9 +66,14 @@ export const RoleSelector: React.FC<RoleSelectorProps> = ({ onSelectRole }) => {
         </button>
       </div>
       
-      <p className="mt-12 text-xs text-slate-400 text-center max-w-lg">
-        EduBot ensures data privacy by processing queries contextually without training on student data. 
-        <br/>Version 1.0.0 MVP
+      <p className="mt-12 text-xs text-slate-400 text-center max-w-lg space-y-2">
+        <span>EduBot ensures data privacy by processing queries contextually without training on student data.</span>
+        <br/>
+        <span>🌍 <strong>Sustainability Note:</strong> We use lightweight AI models to minimize this system's environmental footprint.</span>
+        <br/><br/>
+        <span>By selecting a role, you agree to participate in this prototype test. <a href="#" onClick={(e) => { e.preventDefault(); alert("Opt-out recorded. You may close this window."); }} className="underline hover:text-slate-600">Opt-out here</a>.</span>
+        <br/>
+        <span className="text-slate-300">Version 1.0.0 MVP</span>
       </p>
     </div>
   );

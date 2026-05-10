@@ -21,6 +21,7 @@ const App: React.FC = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [loadingState, setLoadingState] = useState<LoadingState>('idle');
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -74,6 +75,7 @@ How can I help you engage with the materials today?`;
     setView('dashboard');
     setMessages([]);
     setInput('');
+    setShowMobileSidebar(false);
   };
 
   // --- Logic: Bot Management ---
@@ -218,15 +220,25 @@ How can I help you engage with the materials today?`;
   // CHAT VIEW
   return (
     <div className="flex h-screen bg-slate-50 font-inter">
-      {/* Sidebar */}
-      <Sidebar 
-        files={activeBot?.files || []} 
-        activeBotTitle={activeBot?.title || 'Unknown Assessment'}
-        onRemoveFile={handleRemoveFile} 
-        onFilesAdded={handleFilesAdded} 
-        isInstructor={isInstructor}
-        onBackToDashboard={handleBackToDashboard}
-      />
+      {/* Sidebar - Desktop and Mobile Overlay */}
+      <div className={`${showMobileSidebar ? 'fixed inset-0 z-40 flex' : 'hidden'} md:static md:flex md:h-full`}>
+        {showMobileSidebar && (
+          <div 
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 md:hidden"
+            onClick={() => setShowMobileSidebar(false)}
+          />
+        )}
+        <div className={`relative z-40 h-full w-4/5 max-w-sm md:w-80 transition-transform ${showMobileSidebar ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+          <Sidebar 
+            files={activeBot?.files || []} 
+            activeBotTitle={activeBot?.title || 'Unknown Assessment'}
+            onRemoveFile={handleRemoveFile} 
+            onFilesAdded={handleFilesAdded} 
+            isInstructor={isInstructor}
+            onBackToDashboard={handleBackToDashboard}
+          />
+        </div>
+      </div>
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-full relative bg-white">
@@ -236,6 +248,9 @@ How can I help you engage with the materials today?`;
              <button onClick={handleBackToDashboard}><BrainIcon className="w-6 h-6 text-white flex-shrink-0" /></button>
              <span className="font-semibold truncate">{activeBot?.title}</span>
            </div>
+           <button onClick={() => setShowMobileSidebar(true)} className="p-2 text-white/80 hover:text-white">
+             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+           </button>
         </div>
 
         {/* Chat History */}
@@ -264,11 +279,15 @@ How can I help you engage with the materials today?`;
             <div className={`relative flex items-end gap-2 bg-slate-50 border border-slate-300 rounded-2xl p-2 shadow-sm focus-within:ring-2 transition-all ${isInstructor ? 'focus-within:ring-indigo-100 focus-within:border-indigo-500' : 'focus-within:ring-emerald-100 focus-within:border-emerald-500'}`}>
               
               {/* Mobile File Upload Trigger (Only for Instructor) */}
-              {isInstructor && (
-                <div className="md:hidden p-2 text-slate-400">
+              <div className="md:hidden">
+                <button
+                  type="button" 
+                  onClick={() => setShowMobileSidebar(true)}
+                  className="p-3 text-slate-400 hover:text-indigo-600 transition-colors"
+                >
                     <PaperclipIcon className="w-5 h-5" />
-                </div>
-              )}
+                </button>
+              </div>
 
               <textarea
                 ref={textareaRef}

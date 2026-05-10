@@ -29,7 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-80 bg-slate-900 border-r border-slate-800 h-full flex flex-col shadow-xl z-10 hidden md:flex text-white transition-all duration-300">
+    <div className="w-full bg-slate-900 border-r border-slate-800 h-full flex flex-col shadow-xl z-10 text-white transition-all duration-300">
       <div className="p-6 border-b border-slate-800">
         <button 
            onClick={onBackToDashboard}

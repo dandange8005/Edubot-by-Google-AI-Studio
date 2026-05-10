@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bot } from '../types';
-import { BrainIcon, TrashIcon, AcademicCapIcon, UserIcon, LogOutIcon } from './Icons';
+import { BrainIcon, TrashIcon, AcademicCapIcon, UserIcon, LogOutIcon, ChartBarIcon } from './Icons';
 
 interface BotDashboardProps {
   bots: Bot[];
@@ -116,16 +116,28 @@ export const BotDashboard: React.FC<BotDashboardProps> = ({
                   </div>
 
                   {isInstructor && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if(confirm('Are you sure you want to delete this bot?')) onDeleteBot(bot.id);
-                      }}
-                      className="absolute top-4 right-4 p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete Bot"
-                    >
-                      <TrashIcon className="w-4 h-4" />
-                    </button>
+                    <div className="absolute top-4 right-4 flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          alert('Loading simulated query pattern analytics and conversation logs...\\n\\n(At full build this will show common student confusion points and allow instructor review.)');
+                        }}
+                        className="p-2 text-slate-300 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-colors"
+                        title="View Analytics & Logs"
+                      >
+                        <ChartBarIcon className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if(confirm('Are you sure you want to delete this bot?')) onDeleteBot(bot.id);
+                        }}
+                        className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Delete Bot"
+                      >
+                        <TrashIcon className="w-4 h-4" />
+                      </button>
+                    </div>
                   )}
                 </div>
               ))
