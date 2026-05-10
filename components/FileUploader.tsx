@@ -1,6 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { UploadedFile } from '../types';
 import { UploadIcon } from './Icons';
+import * as mammoth from 'mammoth/mammoth.browser';
 
 interface FileUploaderProps {
   onFilesAdded: (files: UploadedFile[]) => void;
@@ -22,11 +23,31 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
         }
 
         try {
-          const base64Data = await readFileAsBase64(file);
+          let base64Data = '';
+          let mimeType = file.type || 'application/octet-stream';
+
+          if (file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc')) {
+            try {
+              const arrayBuffer = await file.arrayBuffer();
+              const result = await mammoth.extractRawText({ arrayBuffer });
+              const text = result.value || ' ';
+              
+              // Base64 encode utf-8 string
+              base64Data = btoa(unescape(encodeURIComponent(text)));
+              mimeType = 'text/plain';
+            } catch (err) {
+              console.error("Failed to extract DOCX", err);
+              alert(`Failed to parse DOCX document: ${file.name}`);
+              continue;
+            }
+          } else {
+            base64Data = await readFileAsBase64(file);
+          }
+
           uploadedFiles.push({
             id: Math.random().toString(36).substring(7),
             name: file.name,
-            mimeType: file.type,
+            mimeType: mimeType,
             data: base64Data,
             size: file.size
           });
@@ -74,12 +95,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onFilesAdded }) => {
           ref={fileInputRef} 
           className="hidden" 
           multiple 
-          accept=".pdf,.txt,.md,.json" 
+          accept=".pdf,.txt,.md,.json,.doc,.docx" 
           onChange={handleFileChange}
         />
         <UploadIcon className="w-8 h-8 text-slate-400 mb-2" />
         <p className="text-sm font-medium text-slate-600">Click to upload knowledge base</p>
-        <p className="text-xs text-slate-400 mt-1">Supported: PDF, TXT, MD, JSON</p>
+        <p className="text-xs text-slate-400 mt-1">Supported: PDF, TXT, MD, JSON, DOC, DOCX</p>
       </div>
     </div>
   );

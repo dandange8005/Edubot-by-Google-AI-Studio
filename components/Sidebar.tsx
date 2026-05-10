@@ -77,7 +77,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <FileIcon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isInstructor ? 'text-indigo-400' : 'text-emerald-400'}`} />
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-200 truncate" title={file.name}>{file.name}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{formatSize(file.size)} • {file.mimeType.split('/')[1].toUpperCase()}</p>
+                        <p className="text-xs text-slate-500 mt-0.5 truncate">{formatSize(file.size)} • {file.name.split('.').pop()?.toUpperCase()}</p>
                     </div>
                     {isInstructor && (
                         <button 

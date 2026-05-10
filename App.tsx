@@ -276,7 +276,7 @@ How can I help you engage with the materials today?`;
         {/* Input Area */}
         <div className="p-4 md:p-6 bg-white border-t border-slate-200 z-20">
           <div className="max-w-3xl mx-auto relative">
-            <div className={`relative flex items-end gap-2 bg-slate-50 border border-slate-300 rounded-2xl p-2 shadow-sm focus-within:ring-2 transition-all ${isInstructor ? 'focus-within:ring-indigo-100 focus-within:border-indigo-500' : 'focus-within:ring-emerald-100 focus-within:border-emerald-500'}`}>
+            <div className={`relative flex items-end gap-2 bg-slate-50 hover:bg-white border border-slate-300 rounded-[1.5rem] p-2 shadow-sm focus-within:ring-4 focus-within:bg-white focus-within:shadow-md transition-all duration-300 ${isInstructor ? 'focus-within:ring-indigo-50 focus-within:border-indigo-400' : 'focus-within:ring-emerald-50 focus-within:border-emerald-400'}`}>
               
               {/* Mobile File Upload Trigger (Only for Instructor) */}
               <div className="md:hidden">
@@ -295,18 +295,18 @@ How can I help you engage with the materials today?`;
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={(!activeBot?.files || activeBot.files.length === 0) ? "No materials available yet..." : "Ask a question..."}
-                className="w-full bg-transparent border-0 focus:ring-0 text-slate-800 text-base placeholder:text-slate-400 resize-none py-3 max-h-[150px] min-h-[50px]"
+                className="w-full bg-transparent border-0 outline-none focus:ring-0 text-slate-800 text-base placeholder:text-slate-500 resize-none py-3 px-3 md:px-4 max-h-[150px] min-h-[52px] leading-relaxed"
                 rows={1}
               />
               
               <button
                 onClick={handleSendMessage}
                 disabled={!input.trim() || loadingState === 'streaming'}
-                className={`p-3 rounded-xl flex-shrink-0 transition-all duration-200 ${
+                className={`p-3 rounded-full flex-shrink-0 transition-all duration-300 transform ${
                   input.trim() && loadingState !== 'streaming'
                     ? isInstructor 
-                        ? 'bg-indigo-600 text-white shadow-md hover:bg-indigo-700 hover:scale-105'
-                        : 'bg-emerald-600 text-white shadow-md hover:bg-emerald-700 hover:scale-105'
+                        ? 'bg-indigo-600 text-white shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5'
+                        : 'bg-emerald-600 text-white shadow-md hover:bg-emerald-700 hover:shadow-lg hover:-translate-y-0.5'
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >
